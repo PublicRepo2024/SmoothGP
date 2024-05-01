@@ -58,7 +58,7 @@ sens2 = np.exp(-0.5)/h
 sensL = 1.0
 
 pg3 = 1.0/3.0
-mech_base0 = lambda arr_x, t: [func(np.reshape(GP_loc_vec(x, eps, mreps=mreps),(2,mreps)),np.reshape(t,(2,1))) for x in arr_x]
+mech_base0 = lambda arr_x, t: [func(np.transpose(GP_loc_vec(x, eps, mreps=mreps)),np.reshape(t,(2,1))) for x in arr_x]
 mech_base1 = lambda arr_x, t: GP_post_func_vec(arr_x, eps, (lambda x: GP_func1(x,t)), sens1, post_func1, mreps)
 mech_base2 = lambda arr_x, t: GP_post_func_vec(arr_x, eps, (lambda x: GP_func2(x,t)), sens2, post_func2, mreps)
 mech_smootht3 = lambda arr_x, t: kde_smooth_vec(arr_x, eps, (lambda x: func(x,t)), t, h, mreps=mreps, smooth_mech_vec=smooth_mechanism_tvec,nu=3,pg=pg3)
