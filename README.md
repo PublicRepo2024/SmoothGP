@@ -8,4 +8,4 @@ scipy v1.9.3 <br/>
 
 ### Data
 The CENSUS dataset in the ./data folder has been compressed. Please de-compress prior to running the experiments.<br/>
-The New York motor vehicle collision dataset can be downloaded from the official webset provided in the paper.
+The New York motor vehicle collision dataset can be downloaded from the official website provided in the paper.
