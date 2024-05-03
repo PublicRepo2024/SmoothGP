@@ -67,7 +67,7 @@ sens_func2 = lambda T: 1.0/dict_taus[str(T[0])+'_'+str(T[1])]
 sensL = 1.0
 
 pg3 = 1.0/3.0
-mech_base0 = lambda arr_x, T: [func(GP_loc_vec(x, eps, mreps=mreps),T) for x in arr_x]
+mech_base0 = lambda arr_x, T: [func(np.transpose(GP_loc_vec(x, eps, mreps=mreps)),T) for x in arr_x]
 mech_base2 = lambda arr_x, T: GP_post_func_vec(arr_x, eps, (lambda x: GP_func2(x,T)), sens_func2(T), post_func2, mreps)
 mech_smootht3 = lambda arr_x, T: twthres_smooth_vec(arr_x, eps, T1=T[0], T2=T[1], tau=dict_taus[str(T[0])+'_'+str(T[1])], mreps=mreps, smooth_mech_vec=smooth_mechanism_tvec,nu=3,pg=pg3)
 mech_lap = lambda arr_x, T: ldp_lap_vec(arr_x, (lambda x: func(x,T)), epsL, mreps, sensL)
