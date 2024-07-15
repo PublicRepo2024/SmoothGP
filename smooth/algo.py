@@ -1,5 +1,5 @@
 import numpy as np
-from smooth.utils import get_cauchy6_rv, get_kde_smooth_analytic, get_cauchy4_rv, func_theta, get_threshold_smooth_analytic, func_twtau2, get_twthreshold_smooth_analytic2, get_standardt_secure
+from smooth.utils import get_cauchy4_rv_secure, get_cauchy6_rv, get_cauchy6_rv_secure, get_kde_smooth_analytic, get_cauchy4_rv, func_theta, get_threshold_smooth_analytic, func_twtau2, get_twthreshold_smooth_analytic2, get_standardt_secure
 
 def smooth_mechanism_c(x, eps, func, sens_func, nu=3, pg=0.2):
     gamma = pg*eps/nu
@@ -14,6 +14,19 @@ def smooth_mechanism_c(x, eps, func, sens_func, nu=3, pg=0.2):
     return y
 
 
+def smooth_mechanism_c_secure(x, eps, func, sens_func, nu=3, pg=0.2):
+    gamma = pg*eps/nu
+    nu1 = nu**(nu/(nu+1.0))
+    eta = (1.0-pg)*eps/(nu1)
+    if nu==3:
+        Z = get_cauchy4_rv_secure()
+    else:
+        Z = get_cauchy6_rv_secure()
+    sens = sens_func(x, gamma)
+    y = func(x)+sens/eta*Z
+    return y
+
+
 def smooth_mechansim_cvec(x, eps, func, sens_func, mreps, nu=3, pg=0.2):
     gamma = pg*eps/nu
     nu1 = nu**(nu/(nu+1.0))
@@ -23,6 +36,19 @@ def smooth_mechansim_cvec(x, eps, func, sens_func, mreps, nu=3, pg=0.2):
         Z = get_cauchy4_rv(mreps)
     else:
         Z = get_cauchy6_rv(mreps)
+    y = func(x)+sens/eta*Z
+    return y
+
+
+def smooth_mechansim_cvec_secure(x, eps, func, sens_func, mreps, nu=3, pg=0.2):
+    gamma = pg*eps/nu
+    nu1 = nu**(nu/(nu+1.0))
+    eta = (1.0-pg)*eps/(nu1)
+    sens = sens_func(x, gamma)
+    if nu==3:
+        Z = get_cauchy4_rv_secure(mreps)
+    else:
+        Z = get_cauchy6_rv_secure(mreps)
     y = func(x)+sens/eta*Z
     return y
 

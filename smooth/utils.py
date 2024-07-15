@@ -374,6 +374,32 @@ def get_kde_smooth_analytic(x, gamma, h):
     return sens
 
 
+def get_cauchy4_rv_secure(m=1):
+    rand = SystemRandom()
+    if m==1:
+        U = rand.random()
+        Z = get_cauchy4_cdf_inv(U)
+        return Z
+    else:
+        Zs = []
+        for i in range(m):
+            U = rand.random()
+            Zs.append(get_cauchy4_cdf_inv(U))
+        return np.array(Zs)
+
+def get_cauchy6_rv_secure(m=1):
+    rand = SystemRandom()
+    if m==1:
+        U = rand.random()
+        Z = get_cauchy6_cdf_inv(U)
+        return Z
+    else:
+        Zs = []
+        for i in range(m):
+            U = rand.random()
+            Zs.append(get_cauchy6_cdf_inv(U))
+        return np.array(Zs)
+        
 def get_standardt_secure(nu,size=1):
     rand = SystemRandom()
     rv = t(nu)
