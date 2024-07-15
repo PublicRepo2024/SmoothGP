@@ -1,7 +1,8 @@
 import numpy as np
 from scipy.optimize import root_scalar, fsolve
 from scipy.special import lambertw
-
+from scipy.stats import t
+from random import SystemRandom
 
 def get_cauchy4_cdf_inv(p):
     ff = lambda a: np.sqrt(2.0)*a+1.0
@@ -373,4 +374,12 @@ def get_kde_smooth_analytic(x, gamma, h):
     return sens
 
 
-
+def get_standardt_secure(nu,size=1):
+    rand = SystemRandom()
+    rv = t(nu)
+    Zs = []
+    for i in range(size):
+        U = rand.random()
+        Z = rv.ppf(U)
+        Zs.append(Z)
+    return np.array(Zs)
