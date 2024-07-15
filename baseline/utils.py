@@ -1,5 +1,7 @@
 import numpy as np
 from scipy.special import lambertw
+from scipy.stats import laplace
+from random import SystemRandom
 
 def polar_to_spherical(r, thetas, d):
     assert (d>2 and len(thetas)==d-1)
@@ -50,3 +52,43 @@ def get_laplacian_2d_vec(eps, mreps):
     assert(w.imag.all()==0)
     r = -(w.real+1)/eps
     return (r, theta)
+
+def get_laplace_secure(size=1):
+    rand = SystemRandom()
+    rv = laplace()
+    Zs = []
+    for i in range(size):
+        U = rand.random()
+        Z = rv.ppf(U)
+        Zs.append(Z)
+    return np.array(Zs)
+
+def get_unform_secure(a, b, size=1):
+    rand = SystemRandom()
+    Zs = []
+    for i in range(size):
+        Z = rand.uniform(a, b)
+        Zs.append(Z)
+    return np.array(Zs)
+
+def get_gamma_secure(a, b, size=1):
+    rand = SystemRandom()
+    Zs = []
+    for i in range(size):
+        Z = rand.gammavariate(a,b)
+        Zs.append(Z)
+    return np.array(Zs)
+
+def get_laplacian_2d_vec_secure(eps, mreps):
+    theta = get_unform_secure(0, 2*np.pi, size=mreps)
+    u = get_unform_secure(0, 1, size=mreps)
+    w = lambertw((u-1)*np.exp(-1),k=-1)
+    assert(w.imag.all()==0)
+    r = -(w.real+1)/eps
+    return (r, theta)
+
+def get_laplacian_vec_secure(eps, d, mreps):
+    thetas = [get_unform_secure(0, np.pi, size=mreps) for i in range(d-2)]
+    thetas.append(get_unform_secure(0, 2*np.pi, size=mreps))
+    r = get_gamma_secure(d,scale=1.0/eps, size=mreps)
+    return (r, thetas)
